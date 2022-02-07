@@ -37,13 +37,15 @@ Route::group(['prefix'=>'user', 'Middleware'=>['user','auth'], 'namespace'=>'use
     Route::get('logout','UserController@logout')->name('logout');
 });
 
-// Route::resource('tours','Admin\BrandController');
-// Route::get('brand/index','Admin\BrandController@index');
-// Route::get('brand/all','Admin\BrandController@getall')->name('getall.tour');
-
 Route::resource('posts','Admin\PostController');
 Route::get('post/index','Admin\PostController@index');
 Route::get('post/all','Admin\PostController@getall')->name('getall.post');
+
+// Comment
+Route::post('comment/add/{id}','Admin\PostController@Comment')->name('add.comment');
+Route::post('comment/update/{id}','Admin\PostController@CommentUpdate')->name('comment.update');
+Route::get('comment/edit/{id}','Admin\PostController@CommentEdit')->name('comment.edit');
+Route::get('comment/delete/{id}','Admin\PostController@deleteComment')->name('comment.del');
 
 
 

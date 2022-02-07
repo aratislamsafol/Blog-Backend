@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Comment;
 use App\Http\Controllers\Controller;
 use App\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Datatables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\Facades\Image;
 
@@ -19,6 +22,7 @@ class PostController extends Controller
      */
     public function index()
     {
+
         return view('admin.post.index');
     }
 
@@ -161,4 +165,46 @@ class PostController extends Controller
         $post->delete();
         return response()->json(['type' => 'success', 'message' => 'Successfully Deleted']);
     }
+
+
+   public function Comment(Request $request){
+    // dd($request->all());
+    // $get_id=Comment::FindorFail($id);
+    if(Auth::check()){
+        Comment::insert([
+            'post_id'=>$request->post_id_get,
+            'comment_text'=>$request->comment_text,
+            'user_id'=>Auth::user()->id,
+            'created_at'=>Carbon::now()
+            ]);
+            return Redirect()->back();
+
+       }else{
+            return Redirect()->route('login');
+       }
+    }
+
+
+   public function CommentEdit($id){
+        $get_edit_id=Comment::FindorFail($id);
+
+        return view('user.post.update_post',compact('get_edit_id'));
+   }
+
+   public function CommentUpdate(Request $request,$id){
+
+        Comment::where('user_id',Auth::user()->id)->find($id)->Update([
+        'post_id'=>$request->post_id_get,
+        'comment_text'=>$request->comment_text,
+        'user_id'=>Auth::user()->id,
+        'updated_at'=>Carbon::now(),
+        ]);
+
+        return redirect()->route('user.dashborad');
+   }
+
+   public function deleteComment($id){
+       Comment::FindorFail($id)->delete();
+       return redirect()->back();
+   }
 }

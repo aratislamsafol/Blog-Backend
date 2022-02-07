@@ -72,7 +72,7 @@
                         <span class="menu-item-label">Dashboard</span>
                     </div><!-- menu-item -->
                 </a><!-- sl-menu-link -->
-                <a href="{{url('/')}}" class="sl-menu-link">
+                <a href="{{route('user.dashborad')}}" class="sl-menu-link">
                     <div class="sl-menu-item">
                         <i class="fa fa-braille tx-20"></i>
                         <span class="menu-item-label">Visit Site</span>
